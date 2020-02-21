@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wangdi94.github.io","root":"/","scheme":"Muse","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="由于疫情的原因，我回武汉的时间遥遥无期，无聊的日子里总要给自己找点事情做，于是我开始实施我谋划许久的家用服务器搭建计划。本来已经把服务器成功搭建在了一个安卓手机上，但是后来我和爸聊天时提到我搭建服务器这件事，他和我说我之前淘汰给他用的笔记本电脑他基本上用不到，可以再还给我用。于是我又要重新在笔记本上搭建，正好自己也想开始记录一下自己平常的一些折腾的故事，所以开了个博客把搭建的流程在这里记录一下。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用笔记本架设家用服务器（1）">
+<meta property="og:url" content="wangdi94.github.io/2020/02/20/%E6%9E%B6%E8%AE%BE%E5%AE%B6%E7%94%A8%E6%9C%8D%E5%8A%A1%E5%99%A81/index.html">
+<meta property="og:site_name" content="莫名狂热的技术笔记">
+<meta property="og:description" content="由于疫情的原因，我回武汉的时间遥遥无期，无聊的日子里总要给自己找点事情做，于是我开始实施我谋划许久的家用服务器搭建计划。本来已经把服务器成功搭建在了一个安卓手机上，但是后来我和爸聊天时提到我搭建服务器这件事，他和我说我之前淘汰给他用的笔记本电脑他基本上用不到，可以再还给我用。于是我又要重新在笔记本上搭建，正好自己也想开始记录一下自己平常的一些折腾的故事，所以开了个博客把搭建的流程在这里记录一下。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-02-20T15:12:23.976Z">
+<meta property="article:modified_time" content="2020-02-21T23:20:32.463Z">
+<meta property="article:author" content="莫名狂热">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="wangdi94.github.io/2020/02/20/%E6%9E%B6%E8%AE%BE%E5%AE%B6%E7%94%A8%E6%9C%8D%E5%8A%A1%E5%99%A81/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>利用笔记本架设家用服务器（1） | 莫名狂热的技术笔记</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">莫名狂热的技术笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right"></div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="wangdi94.github.io/2020/02/20/%E6%9E%B6%E8%AE%BE%E5%AE%B6%E7%94%A8%E6%9C%8D%E5%8A%A1%E5%99%A81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="莫名狂热">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="莫名狂热的技术笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          利用笔记本架设家用服务器（1）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-20 23:12:23" itemprop="dateCreated datePublished" datetime="2020-02-20T23:12:23+08:00">2020-02-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-22 07:20:32" itemprop="dateModified" datetime="2020-02-22T07:20:32+08:00">2020-02-22</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>由于疫情的原因，我回武汉的时间遥遥无期，无聊的日子里总要给自己找点事情做，于是我开始实施我谋划许久的家用服务器搭建计划。本来已经把服务器成功搭建在了一个安卓手机上，但是后来我和爸聊天时提到我搭建服务器这件事，他和我说我之前淘汰给他用的笔记本电脑他基本上用不到，可以再还给我用。于是我又要重新在笔记本上搭建，正好自己也想开始记录一下自己平常的一些折腾的故事，所以开了个博客把搭建的流程在这里记录一下。</p>
+<h2 id="为什么我需要一个家庭服务器"><a href="#为什么我需要一个家庭服务器" class="headerlink" title="为什么我需要一个家庭服务器"></a>为什么我需要一个家庭服务器</h2><p>虽然名字中有“服务器”三个字，但其实无论从性能还是稳定性上，它和专业服务器相比差得远了，但是对我的需求来说，却远远够了。我架设服务器的目的，主要有三个：同步盘，内网穿透，RSS服务器</p>
+<h3 id="同步盘"><a href="#同步盘" class="headerlink" title="同步盘"></a>同步盘</h3><p>对我来说，架设家庭服务器一个最直接的目的就是需要一个稳定好用的同步盘。由于我经常会在宿舍而不去办公室干活，偶尔还会出差，所以一个能够统一工作进度，保证我在任何设备上都能够流畅的工作流程的同步盘就尤其重要。<br>最早的时候还对同步盘没有太多的概念，所以最初的做法就是直接用的iCloud进行同步，但是由于iCloud客户端在windows电脑上谜一般更新时间，而且不能强制同步，经常会出现在宿舍写完了跑去办公室发现根本没有同步过来，只能重新再写，而这样往往会造成一个很可怕的后果，那就是如果新文件只要有改动就会把另一台设备的较旧的文件完全覆盖，而且iCloud是没有文件历史记录功能的！曾经有一次我宿舍打开的文件没有关，我写了一整天的代码就消失了。。<br>所以我后来意识到一个合适的同步盘至少需要以下特点</p>
+<ol>
+<li>客户端能够多平台支持；</li>
+<li>客户端能够做到及时同步，有强制同步的功能；</li>
+<li>有文件历史版本功能；</li>
+</ol>
+<p>于是后来我陆续尝试了dropbox和坚果云，但是dropbox由于需要梯子不太稳定而坚果云免费版流量额度只有1G，而且它们免费版空间也不太够，都不太理想。于是后来我开始尝试自己在腾讯云上搭建私有云ownCloud, 效果很不错然而1M的小水管让同步大文件变成了几乎不可能的事，所以能够利用家庭带宽的家庭服务器就变成了目前完美同步盘唯一的选择。</p>
+<h3 id="内网穿透"><a href="#内网穿透" class="headerlink" title="内网穿透"></a>内网穿透</h3><p>研究所里有个集群可以用来很快速的试验一些想法，是我平常工作非常重要的一个工具，同时也是实现工作流程统一的重要一环。这个集群处在整个学校的大内网中，之前我住宿舍的时候，可以很容易的在宿舍登录服务器，然而后来我搬到校外去住之后，就没法直接连接集群了。于是我又在腾讯云上部署了frp作为中转机进行内网穿透，但是1M的小水管又再一次的让体验变得非常糟糕，所以和同步盘一样，内网穿透也需要一个高带宽的家庭服务器。</p>
+<h3 id="RSS服务器"><a href="#RSS服务器" class="headerlink" title="RSS服务器"></a>RSS服务器</h3><p>我是最近一年来才开始使用RSS订阅这个东西，主要是用于收集最新的文献。目前天文物理领域的主流期刊以及arxiv都支持RSS订阅，这样通过一个工具就可以收集到所有的最新文献，而且RSS工具往往都提供过滤功能，可以自定义过滤功能进一步的自动筛选自己感兴趣的文献加快效率。然而，目前好用的RSS工具几乎没有，要不就是在墙外访问速度感人，而且过滤功能几乎都要求付费才能用。所以，一个自己搭建的RSS服务器就很必要了，而tt-rss这个开源工具就能很好的解决我的这些需求，这个服务对带宽的要求并不高，所以我现在把它装在腾讯云上也用的很舒服，但毕竟腾讯云还是要付费的，所以这次也干脆移到家庭服务器上。</p>
+<h2 id="搭建家庭服务器前的准备"><a href="#搭建家庭服务器前的准备" class="headerlink" title="搭建家庭服务器前的准备"></a>搭建家庭服务器前的准备</h2><h3 id="硬件设备"><a href="#硬件设备" class="headerlink" title="硬件设备"></a>硬件设备</h3><p>理论上，只要能够安装Linux系统的设备，基本上都可以部署上述的三类软件，所以通常的X86/64台式机或者笔记本自然满足要求，类似树莓派这种ARM硬件同样也可以，以及同为ARM设备的Android手机也是可以用于搭建服务器的。</p>
+<p>本来回家之前就计划把之前给家里PC升级时留下的旧主板和CPU用来做服务器，然而回家之后我爸告诉我旧主板连同CPU都被扔了，于是我又把目标锁定到了我妈的旧oppo手机上。拿到手后花了点功夫利用Linux Deploy安装了一个Debian在手机上，并且搭建了同步云和RSS服务器，这次我并没有选择ownCloud作为同步云方案，而是选择了Seafile，主要是看到知乎上有人评价说Seafile更稳定性能更好。</p>
+<p>现在有了一台笔记可以用，自然选择在这台性能更强劲的设备上再搭建一次啦。</p>
+<h3 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h3><p>之前在腾讯云上以及在后来的安卓手机上，我都是选择Debian作为搭建平台。但是这次使用笔记本的话性能更强劲，只做上述的三个东西就太浪费了，所以这次我决定干脆使用OpenWrt这个操作系统搭建一个软路由。OpenWrt是一个针对嵌入式设备的Linux操作系统，主要用于路由器，它可以添加大量丰富的软件包，包括我上述提到的Seafile和内网穿透，但是不包含tt-rss，需要自己搭建。同时他还有其他一些很有用的软件包，值得大家去探索，软件包具体可以看<a href="https://openwrt.org/packages/start" target="_blank" rel="noopener">https://openwrt.org/packages/start</a>。</p>
+<h3 id="一些其他的需求"><a href="#一些其他的需求" class="headerlink" title="一些其他的需求"></a>一些其他的需求</h3><p>搭建上述的一个服务器还有一个很重要的要求，那就家里的宽带必须有个独立的公网IP，而且光猫可以设置为桥接模式，或者设置端口映射，能够让你在外网访问到服务器。公网IP可以打电话找你的运营商要，我出租屋接的是电信的网络，打个电话客服很快就帮我开通了。但是我家里的移动宽带这两点都不满足，我家的光猫连任何让你设置的界面都没有，所以在家里暂时没法假设内网穿透服务，只能等返校了再弄。</p>
+<p>此外如果要把设备作为软路由最好还需要两个网口，我的笔记本只有一个网口，就只能选择旁路由的方案了。</p>
+<h2 id="开始安装OpenWrt"><a href="#开始安装OpenWrt" class="headerlink" title="开始安装OpenWrt"></a>开始安装OpenWrt</h2><h3 id="系统安装"><a href="#系统安装" class="headerlink" title="系统安装"></a>系统安装</h3><p>OpenWrt的映像可以在官网<a href="https://openwrt.org/downloads" target="_blank" rel="noopener">下载</a>，我是用的在清华镜像站下载的X64的<a href="https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/19.07.1/targets/x86/64/openwrt-19.07.1-x86-64-combined-ext4.img.gz" target="_blank" rel="noopener">映像文件</a>。这个文件实际上就是一个完整的OpenWrt系统，为了把这个系统写入笔记本中，需要先进入安装在U盘上的系统，然后再把映像写入系统盘。</p>
+<p>所以先使用<a href="http://www.ushendu.com/" target="_blank" rel="noopener">启动盘制作工具</a>，并把OpenWrt的映像文件和映像写入工具<a href="https://m0n0.ch/wall/physdiskwrite.php" target="_blank" rel="noopener">physdiskwrite</a>放进去，然后笔记本插入U盘并设置设置为U盘启动进入win8系统。</p>
+<p>进入系统后，进入存放映像和<a href="https://m0n0.ch/wall/physdiskwrite.php" target="_blank" rel="noopener">physdiskwrite</a>文件夹打开CMD，输入<code>physdiskwrite -u [你的磁盘文件]</code>然后选择相应的磁盘写入，然后重启用之前写入的磁盘启动即可，这样OpenWrt就已经安装到笔记本上啦！</p>
+<h3 id="配置系统"><a href="#配置系统" class="headerlink" title="配置系统"></a>配置系统</h3><p>进入系统后先输入<code>passwd</code>设置root密码，接下来配置网络。把笔记本连上网线，然后修改<code>/etc/config/network</code>文件，可以看到默认的lan口配置是桥接静态IP模式，所以要将<code>option proto &#39;static&#39;</code>改为<code>option proto &#39;dhcp&#39;</code>并且将后几行删掉，然后输入<code>/etc/init.d/network</code>重启网络服务，再输入<code>ifconfig</code>可以看到<code>LAN</code>已经被分配了一个新的ip，将这个ip输入浏览器中就能进入OpenWrt的页面，输入root密码就可以开始配置了。<br>进入<code>Software</code>点击<code>Configure opkg</code>将<code>opkg/distfeeds.conf</code>中的所有<code>downloads.openwrt.org</code>换成清华源<code>mirrors.tuna.tsinghua.edu.cn/openwrt</code>。然后点击<code>Update lists</code>更新软件列表，就可以看到下面出现的一堆软件了。为方便之后的配置，先安装<code>luci-i18n-base-zh-cn</code>开启中文界面，然后再<code>系统--管理权</code>的下面打开SSH功能。<br>ssh进服务器输入<code>df-h</code>可以看到系统硬盘空间大小只有250M，而我系统硬盘是125G的SSD还有个500G的HDD没有显示，这是因为OpenWrt默认只会用250M左右的空间，需要重新分区，官方也给出了<a href="https://openwrt.org/docs/guide-user/installation/openwrt_x86" target="_blank" rel="noopener">解决办法</a>。主要有两种方法，一种是把源码中默认大小参数改成自己想要的大小，然后自己编译一个版本。第二种是把硬盘插到第二台Linux设备中使用<code>fdisk</code>和<code>resize2fs</code>进行对硬盘进行分区修改。然而我并没有Linux设备，用启动盘上的分区工具折腾了半天发现<code>resize2fs</code>的功能根本没法实现，所以上谷歌找了很久发现官方提供一种<a href="https://openwrt.org/docs/guide-user/additional-software/extroot_configuration" target="_blank" rel="noopener">exroot</a>的方式可以将任何外接储存设备替换根目录，所以直接可以将我SSD上剩余的空间分成一个分区<code>/var/sda3</code>，然后仿照官方教程敲命令就OK了，唯一要注意的就是官方教材使用的设备分区号是<code>/var/sda1</code>，用的时候要注意替换下。而且配置完之后管理界面还会多出一个挂载点的选项，可以继续添加硬盘。</p>
+<h3 id="安装Seafile"><a href="#安装Seafile" class="headerlink" title="安装Seafile"></a>安装Seafile</h3><p>直接搜索Seafile可以看到三个软件，<code>seafile-ccnet</code>、<code>seafile-seahub</code>、以及<code>seafile-server</code>，这三个软件都是Seafile的一部分，所以都应该安装。然而安装<code>seafile-server</code>时，会报错<code>Error: there is no ccnet config directory.</code><br>但是如果ssh连接服务器，在命令行安装<code>seafile-server</code>时，此时错误变成了缺少python的statici18n库，直接安装<code>python-django-statici18n</code>即可。然后再次安装<code>seafile-server</code>，便可以正常填写配置，然而填完配置启动的时候又会提示缺少<code>webpack-loader</code>，这时候用<code>opkg</code>搜索是搜不到的，需要安装<code>python-pip</code>然后运行<code>pip install django-webpack-loader</code>。<br>这次我以为我成功了，然而它又报了个奇怪的错误<code>django.db.utils.OperationalError: no such table: django_content_type</code>，似乎是数据库的问题，但是之前我在安装手机上用的是Mysql而OpenWrt上默认使用sqlite，但是似乎安装脚本还是用的Mysql，但是OpenWrt软件库又没有Mysql，看来走捷径的方法走不通了。我还是过几天自己手动安装一下吧！</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么我需要一个家庭服务器"><span class="nav-number">1.</span> <span class="nav-text">为什么我需要一个家庭服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#同步盘"><span class="nav-number">1.1.</span> <span class="nav-text">同步盘</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内网穿透"><span class="nav-number">1.2.</span> <span class="nav-text">内网穿透</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RSS服务器"><span class="nav-number">1.3.</span> <span class="nav-text">RSS服务器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搭建家庭服务器前的准备"><span class="nav-number">2.</span> <span class="nav-text">搭建家庭服务器前的准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#硬件设备"><span class="nav-number">2.1.</span> <span class="nav-text">硬件设备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作系统"><span class="nav-number">2.2.</span> <span class="nav-text">操作系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一些其他的需求"><span class="nav-number">2.3.</span> <span class="nav-text">一些其他的需求</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开始安装OpenWrt"><span class="nav-number">3.</span> <span class="nav-text">开始安装OpenWrt</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#系统安装"><span class="nav-number">3.1.</span> <span class="nav-text">系统安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置系统"><span class="nav-number">3.2.</span> <span class="nav-text">配置系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Seafile"><span class="nav-number">3.3.</span> <span class="nav-text">安装Seafile</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">莫名狂热</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">莫名狂热</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
